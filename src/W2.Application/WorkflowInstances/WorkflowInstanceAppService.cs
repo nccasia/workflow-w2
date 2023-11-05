@@ -7,6 +7,7 @@ using Elsa.Persistence;
 using Elsa.Persistence.Specifications;
 using Elsa.Persistence.Specifications.WorkflowInstances;
 using Elsa.Services;
+using Jint.Native;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -600,6 +601,26 @@ namespace W2.WorkflowInstances
                 var workflowDefinition = workflowDefinitions.FirstOrDefault(x => x.DefinitionId == instance.DefinitionId);
                 var workflowInstanceDto = ObjectMapper.Map<WorkflowInstance, WorkflowInstanceDto>(instance);
                 workflowInstanceDto.WorkflowDefinitionDisplayName = workflowDefinition.DisplayName;
+                
+                if (instance.Variables.Data.TryGetValue("Request", out object targetValue))
+                {
+                    string title = null;
+
+                    if (targetValue is IDictionary<string, string> valueDictionary && valueDictionary.ContainsKey("Title"))
+                    {
+                        title = valueDictionary["Title"];
+                    }
+                    else if (targetValue is IDictionary<string, object> valueObjectDictionary && valueObjectDictionary.ContainsKey("Title"))
+                    {
+                        title = valueObjectDictionary["Title"] as string;
+                    }
+
+                    if (!string.IsNullOrEmpty(title))
+                    {
+                        workflowInstanceDto.WorkflowDefinitionDisplayName = workflowDefinition.DisplayName + ": " + title;
+                    }
+                }
+
                 workflowInstanceDto.StakeHolders = new List<string>();
                 workflowInstanceDto.CurrentStates = new List<string>();
 

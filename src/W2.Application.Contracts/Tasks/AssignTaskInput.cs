@@ -11,6 +11,7 @@ namespace W2.Tasks
         public string WorkflowInstanceId { get; set; }
         public string ApproveSignal { get; set; }
         public string RejectSignal { get; set; }
+        public string TaskTitle { get; set; }
         public string DynamicActionData { get; set; }
         public string Description { get; set; }
         public List<string> EmailTo { get; set; }

@@ -9,6 +9,7 @@ namespace W2.WorkflowInstances
         public string Id { get; set; }
         public string WorkflowDefinitionId { get; set; }
         public string WorkflowDefinitionDisplayName { get; set; }
+        public object Variables { get; set; }
         public string UserRequestName { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? LastExecutedAt { get; set; }

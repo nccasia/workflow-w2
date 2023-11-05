@@ -22,6 +22,7 @@ using W2.TaskEmail;
 using W2.TaskActions;
 using System.Collections;
 using Elsa.Models;
+using W2.ExternalResources;
 
 namespace W2.Tasks
 {
@@ -68,6 +69,12 @@ namespace W2.Tasks
             var workflowInstance = await _workflowInstanceStore.FindByIdAsync(input.WorkflowInstanceId);
             var workflowDefinitions = (await _workflowDefinitionStore.FindManyAsync(
                 new ListAllWorkflowDefinitionsSpecification(CurrentTenantStrId, new string[] { workflowInstance.DefinitionId }))).FirstOrDefault();
+            string taskTitle = null;
+
+            if (!string.IsNullOrEmpty(input.TaskTitle))
+            {
+                taskTitle = input.TaskTitle;
+            }
 
             var task = await _taskRepository.InsertAsync(new W2Task
             {
@@ -78,6 +85,7 @@ namespace W2.Tasks
                 DynamicActionData = input.DynamicActionData,
                 Status = W2TaskStatus.Pending,
                 Name = workflowDefinitions.Name,
+                Title = taskTitle,
                 Description = input.Description,
                 ApproveSignal = input.ApproveSignal,
                 RejectSignal = input.RejectSignal,
@@ -318,6 +326,7 @@ namespace W2.Tasks
                     Email = x.W2task.Email,
                     Id = x.W2task.Id,
                     Name = x.W2task.Name,
+                    Title = x.W2task.Title,
                     EmailTo = x.EmailTo,
                     DynamicActionData = x.W2task.DynamicActionData,
                     OtherActionSignals = x.OtherActionSignals,
@@ -396,6 +405,7 @@ namespace W2.Tasks
                     Email = x.Email,
                     Id = x.Id,
                     Name = x.Name,
+                    Title = x.Title,
                     DynamicActionData = x.DynamicActionData,
                     Reason = x.Reason,
                     Status = x.Status,

@@ -15,6 +15,7 @@ namespace W2.Tasks
         public Guid Author { get; set; }
         public W2TaskStatus Status { get; set; }
         public string Name { get; set; } // Task name
+        public string Title { get; set; } // Task title
         public string Description { get; set; } // Task description
         public string Reason { get; set; } // Task reason
         public string ApproveSignal { get; set; } // Task when approving

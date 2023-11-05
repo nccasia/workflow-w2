@@ -14,6 +14,7 @@ namespace W2.Tasks
         public string Email { get; set; }
         public W2TaskStatus Status { get; set; }
         public string Name { get; set; }
+        public string Title { get; set; }
         public string Description { get; set; }
         public string DynamicActionData { get; set; }
         public string Reason { get; set; }
