@@ -233,7 +233,7 @@ namespace W2.Tasks
             var users = await _userRepository.GetListAsync();
             var tasks = await _taskRepository.GetListAsync();
             var taskEmail = await _taskEmailRepository.GetListAsync();
-            var taskAction = await _taskActionsRepository.GetListAsync();
+            var taskAction = await _taskActionsRepository.GetListAsync();        
             var hasWorkflowDefinitionId = !string.IsNullOrEmpty(input.WorkflowDefinitionId);
 
             var query = from task in tasks

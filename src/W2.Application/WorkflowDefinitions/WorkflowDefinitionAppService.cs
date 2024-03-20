@@ -22,15 +22,18 @@ namespace W2.WorkflowDefinitions
     {
         private readonly IWorkflowDefinitionStore _workflowDefinitionStore;
         private readonly IRepository<WorkflowCustomInputDefinition, Guid> _workflowCustomInputDefinitionRepository;
+        public readonly IRepository<WorkflowCustomDefinitionSetting, Guid> _workflowCustomDefinitionSettingRepository;
         private readonly IWorkflowPublisher _workflowPublisher;
 
         public WorkflowDefinitionAppService(
             IWorkflowDefinitionStore workflowDefinitionStore,
             IRepository<WorkflowCustomInputDefinition, Guid> workflowCustomInputDefinitionRepository,
+            IRepository<WorkflowCustomDefinitionSetting, Guid> workflowCustomDefinitionSettingRepository,
             IWorkflowPublisher workflowPublisher)
         {
             _workflowDefinitionStore = workflowDefinitionStore;
             _workflowCustomInputDefinitionRepository = workflowCustomInputDefinitionRepository;
+            _workflowCustomDefinitionSettingRepository = workflowCustomDefinitionSettingRepository;
             _workflowPublisher = workflowPublisher;
         }
 
@@ -54,6 +57,8 @@ namespace W2.WorkflowDefinitions
             var definitionIds = workflowDefinitions.Select(x => x.DefinitionId).ToList();
             var inputDefinitions = await _workflowCustomInputDefinitionRepository
                 .GetListAsync(x => definitionIds.Contains(x.WorkflowDefinitionId));
+            var settingDefinitions = await _workflowCustomDefinitionSettingRepository
+                .GetListAsync(x => definitionIds.Contains(x.WorkflowDefinitionId));
             var workflowDefinitionSummaries = ObjectMapper.Map<List<WorkflowDefinition>, List<WorkflowDefinitionSummaryDto>>(workflowDefinitions);
 
             foreach (var summary in workflowDefinitionSummaries)
@@ -64,6 +69,19 @@ namespace W2.WorkflowDefinitions
                     continue;
                 }
                 summary.InputDefinition = ObjectMapper.Map<WorkflowCustomInputDefinition, WorkflowCustomInputDefinitionDto>(inputDefinition);
+            }
+            foreach (var summary in workflowDefinitionSummaries)
+            {
+                var settingDefinition = settingDefinitions.FirstOrDefault(x => x.WorkflowDefinitionId == summary.DefinitionId);
+                if (settingDefinition == null)
+                {
+                    continue;
+                }
+                summary.SettingDefinition = new WorkflowCustomDefinitionSettingDto
+                {
+                    WorkflowDefinitionId = settingDefinition.WorkflowDefinitionId,
+                    PropertyDefinitions = settingDefinition.PropertyDefinitions
+                } ;
             }
 
             return new PagedResultDto<WorkflowDefinitionSummaryDto>(workflowDefinitionSummaries.Count, workflowDefinitionSummaries);
@@ -103,6 +121,23 @@ namespace W2.WorkflowDefinitions
                 var inputDefinition = await _workflowCustomInputDefinitionRepository.GetAsync(input.Id);
                 ObjectMapper.Map(input, inputDefinition);
                 await _workflowCustomInputDefinitionRepository.UpdateAsync(inputDefinition);
+            }
+        }
+
+        [Authorize(W2Permissions.WorkflowManagementWorkflowDefinitionsDesign)]
+        public async Task SaveWorkflowDefinitionSettingAsync(WorkflowCustomDefinitionSettingDto input)
+        {
+            if (input.Id == default)
+            {
+                await _workflowCustomDefinitionSettingRepository.InsertAsync(
+                    ObjectMapper.Map<WorkflowCustomDefinitionSettingDto, WorkflowCustomDefinitionSetting>(input)
+                );
+            }
+            else
+            {
+                var settingDefinition = await _workflowCustomDefinitionSettingRepository.GetAsync(input.Id);
+                ObjectMapper.Map(input, settingDefinition);
+                await _workflowCustomDefinitionSettingRepository.UpdateAsync(settingDefinition);
             }
         }
 

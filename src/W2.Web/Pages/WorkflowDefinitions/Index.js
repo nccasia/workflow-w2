@@ -332,6 +332,7 @@ $(function () {
         modalClass: 'DefineWorkflowInputModal'
     });
 
+
     var createWorkflowDefinitionModal = new abp.ModalManager(abp.appPath + 'WorkflowDefinitions/CreateModal');
 
     var dataTable = $('#WorkflowDefinitionsTable').DataTable(
@@ -447,6 +448,10 @@ $(function () {
     defineWorkflowInputModal.onResult(function () {
         dataTable.ajax.reload();
     });
+
+    defineWorkflowSettingModal.onResult(function () {
+        dataTable.ajax.reload();
+    })
 
     $("#CreateWorkflowDefinition").click(function (e) {
         e.preventDefault();

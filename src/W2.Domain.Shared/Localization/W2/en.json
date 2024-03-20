@@ -29,6 +29,7 @@
     "Welcome": "Welcome",
     "WorkflowDefinition:Create": "Create",
     "WorkflowDefinition:DefineInput": "Define Input",
+    "WorkflowDefinition:Setting": "Setting",
     "WorkflowDefinition:DeleteConfirmationMessage": "Workflow '{0}' will be deleted. Do you confirm that?",
     "WorkflowDefinition:DisplayName": "Display Name",
     "WorkflowDefinition:IsPublished": "Published",

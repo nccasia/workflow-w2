@@ -46,6 +46,7 @@ public class W2DbContext :
      */
     public DbSet<WorkflowInstanceStarter> WorkflowInstanceStarters { get; set; }
     public DbSet<WorkflowCustomInputDefinition> WorkflowCustomInputDefinitions { get; set; }
+    public DbSet<WorkflowCustomDefinitionSetting> WorkflowCustomDefinitionSettings {get; set;}
 
     //Identity
     public DbSet<IdentityUser> Users { get; set; }
@@ -125,6 +126,14 @@ public class W2DbContext :
         {
             b.ToTable("WorkflowCustomInputDefinitions");
             b.Property(x => x.PropertyDefinitions).HasConversion(new ElsaEFJsonValueConverter<ICollection<WorkflowCustomInputPropertyDefinition>>(), ValueComparer.CreateDefault(typeof(ICollection<WorkflowCustomInputPropertyDefinition>), false));
+            b.Property(x => x.WorkflowDefinitionId).IsRequired();
+            b.HasIndex(x => x.WorkflowDefinitionId);
+        });
+
+        builder.Entity<WorkflowCustomDefinitionSetting>(b =>
+        {
+            b.ToTable("WorkflowCustomDefinitionsSettings");
+            b.Property(x => x.PropertyDefinitions).HasConversion(new ElsaEFJsonValueConverter<Dictionary<string, string>>(), ValueComparer.CreateDefault(typeof(Dictionary<string, string>), false));
             b.Property(x => x.WorkflowDefinitionId).IsRequired();
             b.HasIndex(x => x.WorkflowDefinitionId);
         });

@@ -10,8 +10,9 @@ namespace W2.WorkflowDefinitions
         public string Description { get; set; }
         public int Version { get; set; }
         public bool IsSingleton { get; set; }
-        public bool IsPublished { get; set; }
+        public bool IsPublished { get; set; }       
         public bool IsLatest { get; set; }
         public WorkflowCustomInputDefinitionDto InputDefinition { get; set; }
+        public WorkflowCustomDefinitionSettingDto SettingDefinition {get; set;}
     }
 }
