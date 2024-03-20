@@ -15,5 +15,8 @@ namespace W2.Web.Pages.WorkflowDefinitions.Models
 
         [DisplayName("Required")]
         public bool IsRequired { get; set; }
+
+        [DisplayName("IsTitle")]
+        public bool IsTitle { get; set; }
     }
 }
