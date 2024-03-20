@@ -13,6 +13,7 @@ namespace W2.Login
 
     public class AuthUser
     {
-        public string Token { get; set; }
+        public string Token { get; set; } = string.Empty;
+        public int AccessFailedCount { get; set; }
     }
 }
