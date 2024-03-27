@@ -73,6 +73,7 @@ namespace W2.Tasks
             {
                 TenantId = CurrentTenant.Id,
                 Author = input.UserId,
+                TaskId = GuidGenerator.Create(),
                 WorkflowInstanceId = input.WorkflowInstanceId,
                 WorkflowDefinitionId = workflowInstance.DefinitionId,
                 DynamicActionData = input.DynamicActionData,
@@ -321,6 +322,7 @@ namespace W2.Tasks
                     DynamicActionData = x.W2task.DynamicActionData,
                     OtherActionSignals = x.OtherActionSignals,
                     Reason = x.W2task.Reason,
+                    TaskId = x.W2task.TaskId,
                     Status = x.W2task.Status,
                     WorkflowDefinitionId = x.W2task.WorkflowDefinitionId,
                     WorkflowInstanceId = x.W2task.WorkflowInstanceId

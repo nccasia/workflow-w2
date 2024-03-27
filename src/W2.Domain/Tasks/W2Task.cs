@@ -12,6 +12,7 @@ namespace W2.Tasks
         public string Email { get; set; }
         public Dictionary<string, string> Data { get; set; }
         public Guid? TenantId { get; set; }
+        public Guid? TaskId { get; set; }
         public Guid Author { get; set; }
         public W2TaskStatus Status { get; set; }
         public string Name { get; set; } // Task name
